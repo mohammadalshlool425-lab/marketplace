@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>السوق | الصفحة الرئيسية</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+    <style>
+        /* أنماط مؤقتة للصفحة الرئيسية */
+        .home-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .navbar {
+            background: var(--bg-white);
+            padding: 16px 24px;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        .navbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+        .btn-danger {
+            background: var(--error);
+            color: white;
+        }
+        .btn-danger:hover {
+            opacity: 0.9;
+        }
+        .home-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;            text-align: center;
+        }
+        .welcome-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+        .home-content h1 {
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+        .home-content p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 500px;
+        }
+        .user-info {
+            margin-top: 24px;
+            padding: 20px;
+            background: var(--bg-white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            min-width: 300px;
+        }
+        .user-info p {
+            margin: 8px 0;
+            font-size: 0.95rem;
+        }
+        .user-info strong {
+            color: var(--primary);
+        }
+        /* حالة عدم تسجيل الدخول */
+        #guestView, #userView {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="home-container">
+        <!-- Navigation Bar -->
+        <nav class="navbar">
+            <div class="navbar-brand">
+                <span>🏪</span>
+                <span>السوق</span>
+            </div>
+            <div class="navbar-actions">
+                <!-- للزوار -->
+                <div id="guestActions">
+                    <a href="auth/login.html" class="btn btn-outline">تسجيل الدخول</a>
+                </div>
+                <!-- للمسجلين -->
+                <div id="userActions" class="hidden">
+                    <span id="navUserName" style="margin-left: 12px; font-weight: 500;"></span>
+                    <button class="btn btn-danger" id="logoutBtn">تسجيل الخروج</button>
+                </div>
+            </div>
+        </nav>
+        <!-- Guest View -->
+        <div class="home-content" id="guestView">
+            <div class="welcome-icon">🛍️</div>
+            <h1>مرحباً بك في السوق</h1>
+            <p>منصة بيع وشراء متكاملة. سجّل دخولك للبدء!</p>
+        </div>
+        <!-- User View -->
+        <div class="home-content" id="userView">
+            <div class="welcome-icon">🎉</div>
+            <h1>أهلاً وسهلاً!</h1>
+            <p>تم تسجيل دخولك بنجاح</p>
+            <div class="user-info">
+                <p>📧 البريد: <strong id="userEmail">-</strong></p>
+                <p>🆔 المعرّف: <strong id="userId">-</strong></p>
+                <p>📅 آخر دخول: <strong id="userLastLogin">-</strong></p>
+            </div>
+        </div>
+    </div>
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="assets/js/firebase-config.js"></script>
+    <script>
+        // ============ Home Page Logic ============
+        (function() {
+            'use strict';
+            const guestView = document.getElementById('guestView');
+            const userView = document.getElementById('userView');
+            const guestActions = document.getElementById('guestActions');
+            const userActions = document.getElementById('userActions');
+            const logoutBtn = document.getElementById('logoutBtn');
+            // مراقبة حالة المصادقة
+            auth.onAuthStateChanged(function(user) {
+                if (user) {
+                    // ---- مستخدم مسجل ----
+                    guestView.style.display = 'none';
+                    userView.style.display = 'flex';
+                    guestActions.classList.add('hidden');
+                    userActions.classList.remove('hidden');
+                    // عرض بيانات المستخدم
+                    document.getElementById('userEmail').textContent = user.email;
+                    document.getElementById('userId').textContent = user.uid.substring(0, 12) + '...';
+                    document.getElementById('navUserName').textContent = user.displayName || user.email.split('@')[0];
+                    // تاريخ آخر دخول
+                    if (user.metadata.lastSignInTime) {
+                        const lastLogin = new Date(user.metadata.lastSignInTime);
+                        document.getElementById('userLastLogin').textContent =
+                            lastLogin.toLocaleDateString('ar-EG') + ' - ' +
+                            lastLogin.toLocaleTimeString('ar-EG');
+                    }
+                } else {
+                    // ---- زائر ----
+                    guestView.style.display = 'flex';
+                    userView.style.display = 'none';
+                    guestActions.classList.remove('hidden');
+                    userActions.classList.add('hidden');
+                }
+            });
+            // تسجيل الخروج
+            logoutBtn.addEventListener('click', async function() {
+                try {
+                    await auth.signOut();
+                    console.log('✅ Logged out');
+                } catch (error) {
+                    console.error('❌ Logout error:', error);
+                }
+            });
+        })();
+    </script>
+</body>
+</html>
