@@ -1,16 +1,13 @@
 // ==============================================
 //  Firebase Configuration & Initialization
-//  هذا الملف مسؤول عن تهيئة الاتصال بـ Firebase
 // ==============================================
 
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+// 1. استدعاء الأدوات الحديثة من روابط Firebase مباشرة
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// 2. مفاتيح الربط الخاصة بمشروعك
 const firebaseConfig = {
   apiKey: "AIzaSyCKgJr981P09i3hiMyRTDgL_67_Q1R671Q",
   authDomain: "marketplace-91934.firebaseapp.com",
@@ -21,17 +18,13 @@ const firebaseConfig = {
   measurementId: "G-VRG75NEVE2"
 };
 
-// Initialize Firebase
+// 3. تهيئة التطبيق
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
 
-// تهيئة Firebase
-firebase.initializeApp(firebaseConfig);
+// 4. تصدير خدمات المصادقة وقاعدة البيانات لاستخدامها في باقي الملفات
+export const auth = getAuth(app);
+export const db = getFirestore(app);
 
-// تصدير خدمة المصادقة للاستخدام في ملفات أخرى
-const auth = firebase.auth();
-const db = firebase.firestore();
-
-// ضبط اللغة العربية لرسائل Firebase
+// ضبط اللغة العربية
 auth.languageCode = 'ar';
 console.log("✅ Firebase initialized successfully");
