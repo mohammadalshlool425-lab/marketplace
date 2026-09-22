@@ -1,0 +1,379 @@
+/* ==============================================
+   Auth Pages Styles - أنماط صفحات المصادقة
+   ============================================== */
+
+/* ---------- Auth Layout ---------- */
+.auth-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    background:
+        linear-gradient(135deg, #667eea20 0%, #764ba220 100%),
+        var(--bg-light);
+}
+
+/* ---------- Auth Card ---------- */
+.auth-card {
+    background: var(--bg-white);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-xl);
+    width: 100%;
+    max-width: 440px;
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* الشريط العلوي المزخرف */
+.auth-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+}
+
+/* ---------- Auth Header ---------- */
+.auth-header {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.auth-logo {
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 1.8rem;
+    color: white;
+}
+
+.auth-header h1 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.auth-header p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+/* ---------- Form Styles ---------- */
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* مجموعة الحقل */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-group label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.form-group label .required {
+    color: var(--error);
+    margin-right: 2px;
+}
+
+/* حقل الإدخال مع أيقونة */
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-wrapper .input-icon {
+    position: absolute;
+    right: 14px;
+    color: var(--text-light);
+    font-size: 1.1rem;
+    transition: var(--transition-fast);
+    pointer-events: none;
+}
+
+.input-wrapper input {
+    width: 100%;
+    padding: 12px 44px 12px 14px;
+    border: 2px solid var(--border-light);
+    border-radius: var(--radius-md);
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    background: var(--bg-white);
+    transition: var(--transition);
+    direction: ltr;
+    text-align: right;
+}
+
+.input-wrapper input::placeholder {
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+.input-wrapper input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+.input-wrapper input:focus + .input-icon,
+.input-wrapper input:focus ~ .input-icon {
+    color: var(--primary);
+}
+
+/* حالة الخطأ */
+.input-wrapper input.input-error {
+    border-color: var(--error);
+    box-shadow: 0 0 0 3px #FEE2E2;
+}
+
+/* رسالة الخطأ */
+.field-error {
+    font-size: 0.8rem;
+    color: var(--error);
+    display: none;
+    align-items: center;
+    gap: 4px;
+    margin-top: 2px;
+}
+
+.field-error.visible {
+    display: flex;
+}
+
+/* زر إظهار/إخفاء كلمة المرور */
+.toggle-password {
+    position: absolute;
+    left: 14px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-light);
+    font-size: 1.1rem;
+    padding: 4px;
+    transition: var(--transition-fast);
+    display: flex;
+    align-items: center;
+}
+
+.toggle-password:hover {
+    color: var(--text-secondary);
+}
+
+/* ---------- Password Strength Meter ---------- */
+.password-strength {
+    display: flex;
+    gap: 4px;
+    margin-top: 4px;
+}
+
+.strength-bar {
+    height: 3px;
+    flex: 1;
+    background: var(--border-light);
+    border-radius: 2px;
+    transition: var(--transition);
+}
+
+.strength-bar.weak { background: var(--error); }
+.strength-bar.medium { background: var(--warning); }
+.strength-bar.strong { background: var(--success); }
+
+.strength-text {
+    font-size: 0.75rem;
+    margin-top: 4px;
+    color: var(--text-light);
+}
+
+/* ---------- Remember Me & Forgot ---------- */
+.form-options {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.checkbox-wrapper input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--primary);
+    cursor: pointer;
+}
+
+.checkbox-wrapper span {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.forgot-link {
+    font-size: 0.875rem;
+    color: var(--primary);
+    font-weight: 500;
+}
+
+.forgot-link:hover {
+    color: var(--primary-dark);
+    text-decoration: underline;
+}
+
+/* ---------- Submit Button ---------- */
+.btn-auth {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-lg);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.btn-primary:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* زر التحميل */
+.btn-auth .btn-spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+}
+
+/* ---------- Divider ---------- */
+.auth-divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    color: var(--text-light);
+    font-size: 0.85rem;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border-light);
+}
+
+/* ---------- Social Login ---------- */
+.social-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+.btn-social {
+    flex: 1;
+    padding: 12px;
+    border: 2px solid var(--border-light);
+    border-radius: var(--radius-md);
+    background: var(--bg-white);
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.btn-social:hover {
+    border-color: var(--border-medium);
+    background: var(--bg-light);
+    transform: translateY(-1px);
+}
+
+.btn-social img {
+    width: 20px;
+    height: 20px;
+}
+
+/* ---------- Auth Footer ---------- */
+.auth-footer {
+    text-align: center;
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border-light);
+}
+
+.auth-footer p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.auth-footer a {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.auth-footer a:hover {
+    text-decoration: underline;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 480px) {
+    .auth-card {
+        padding: 28px 20px;
+        border-radius: var(--radius-lg);
+    }
+    .auth-header h1 {
+        font-size: 1.4rem;
+    }
+    .social-buttons {
+        flex-direction: column;
+    }
+    .form-options {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
